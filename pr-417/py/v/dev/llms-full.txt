@@ -44,7 +44,8 @@ runs code. `network` sets whether that process can reach the network:
 `"none"` (the default) or `"full"`. The sandbox works on Linux and macOS.
 For local development on another system, set the
 `COMMONS_ALLOW_UNSAFE_FALLBACK` environment variable to run the code with
-limited checks instead. These checks are not a security boundary.
+limited checks instead. Warning! These checks are not intended to be a
+security boundary.
 
 Construction raises a TypeError if `client` is not a `chatlas.Chat`, if
 an entry of `data_sources` is not a `DataSource`, or if a layer is not
