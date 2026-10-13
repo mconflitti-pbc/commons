@@ -357,7 +357,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <thead>
 <tr class="header">
 <th>How the answer is produced</th>
-<th>Provenance outcome</th>
+<th>Provenance outcome<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></th>
 </tr>
 </thead>
 <tbody>
@@ -517,7 +517,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">label</span><span class="kw">:</span><span class="at"> Total individuals observed</span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">description</span><span class="kw">:</span><span class="at"> Sum of the individuals recorded in surveys.</span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">expr</span><span class="kw">:</span><span class="at"> SUM(count)</span></span></code></pre></div>
-<p>There are three kinds of definition. A definition can take part in a trusted metric calculation, or the agent can use it in custom SQL:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>There are three kinds of definition. A definition can take part in a trusted metric calculation, or the agent can use it in custom SQL:<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -631,7 +631,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>In custom SQL, the agent writes a definition as a <code>{name}</code> token, and <code>commons</code> expands it to the SQL compiled for the data source. This is still custom SQL, so the provenance outcome is <code>Cited</code> or <code>Untrusted</code>, not <code>Trusted</code>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>An answer that uses both a trusted calculation and custom SQL or Python gets the outcome for custom code: <code>Cited</code> or <code>Untrusted</code>, never <code>Trusted</code>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>In custom SQL, the agent writes a definition as a <code>{name}</code> token, and <code>commons</code> expands it to the SQL compiled for the data source. This is still custom SQL, so the provenance outcome is <code>Cited</code> or <code>Untrusted</code>, not <code>Trusted</code>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

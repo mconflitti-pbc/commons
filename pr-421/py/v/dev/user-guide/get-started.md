@@ -36,7 +36,7 @@ The lower-trust path has two possible provenance outcomes. When the agent writes
 
 The table below lists how each provenance outcome can occur:
 
-| How the answer is produced | Provenance outcome |
+| How the answer is produced | Provenance outcome[^1] |
 |----|----|
 | A trusted Python [measure](#semantic-layer) | `Trusted` <img src="assets/figs/trusted-icon.svg" class="commons-documentation-marker" /> |
 | A [data dictionary metric](#definitions), possibly grouped or filtered with definitions | `Trusted` <img src="assets/figs/trusted-icon.svg" class="commons-documentation-marker" /> |
@@ -214,7 +214,7 @@ tables:
         expr: SUM(count)
 ```
 
-There are three kinds of definition. A definition can take part in a trusted metric calculation, or the agent can use it in custom SQL:[^1]
+There are three kinds of definition. A definition can take part in a trusted metric calculation, or the agent can use it in custom SQL:[^2]
 
 | Kind | Example | Use in a trusted metric calculation |
 |----|----|----|
@@ -327,4 +327,6 @@ app = App(app_ui, app_server)
 ## Footnotes
 
 
-[^1]: In custom SQL, the agent writes a definition as a `{name}` token, and `commons` expands it to the SQL compiled for the data source. This is still custom SQL, so the provenance outcome is `Cited` or `Untrusted`, not `Trusted`.
+[^1]: An answer that uses both a trusted calculation and custom SQL or Python gets the outcome for custom code: `Cited` or `Untrusted`, never `Trusted`.
+
+[^2]: In custom SQL, the agent writes a definition as a `{name}` token, and `commons` expands it to the SQL compiled for the data source. This is still custom SQL, so the provenance outcome is `Cited` or `Untrusted`, not `Trusted`.
