@@ -35,6 +35,7 @@ __all__ = [
     "FS_WRITE_FILE",
     "SCOPE_ABSTRACT_UNIX_SOCKET",
     "SCOPE_MIN_ABI",
+    "SCOPE_SIGNAL",
     "PathBeneathAttr",
     "ScopedRulesetAttr",
     "abi_version",
@@ -85,8 +86,10 @@ FS_IOCTL_DEV = 1 << 15
 FS_READ_ONLY = FS_EXECUTE | FS_READ_FILE | FS_READ_DIR
 
 # ABI 6 (Linux 6.12) scoping: the worker can connect only to abstract AF_UNIX
-# sockets that it or its descendants bound, even under full network.
+# sockets that it or its descendants bound, even under full network, and can
+# signal only itself and its descendants.
 SCOPE_ABSTRACT_UNIX_SOCKET = 1 << 0
+SCOPE_SIGNAL = 1 << 1
 SCOPE_MIN_ABI = 6
 
 # The only rights a rule on a non-directory may name; the kernel refuses the
@@ -295,9 +298,9 @@ def engage(read_roots: Iterable[str], write_roots: Iterable[str]) -> int | None:
 
     Read roots are granted execute, read-file and read-dir. Write roots are
     granted everything the ruleset handles. On ABI 6 and later the ruleset
-    also scopes abstract AF_UNIX sockets. Once this returns, nothing can
-    widen the process's access again, including anything it goes on to
-    execute.
+    also scopes abstract AF_UNIX sockets and signals. Once this returns,
+    nothing can widen the process's access again, including anything it
+    goes on to execute.
     """
     abi = abi_version()
     if abi < 1:
@@ -312,7 +315,7 @@ def engage(read_roots: Iterable[str], write_roots: Iterable[str]) -> int | None:
             handled_access_fs=handled,
             # Zero, so Landlock leaves network access alone.
             handled_access_net=0,
-            scoped=SCOPE_ABSTRACT_UNIX_SOCKET,
+            scoped=SCOPE_ABSTRACT_UNIX_SOCKET | SCOPE_SIGNAL,
         )
     else:
         attr = RulesetAttr(handled_access_fs=handled)
