@@ -31,6 +31,7 @@ __all__ = [
     "FS_READ_ONLY",
     "FS_REFER",
     "FS_REMOVE_FILE",
+    "FS_RESOLVE_UNIX",
     "FS_TRUNCATE",
     "FS_WRITE_FILE",
     "SCOPE_ABSTRACT_UNIX_SOCKET",
@@ -79,6 +80,8 @@ FS_V1_ALL = (1 << 13) - 1
 FS_REFER = 1 << 13
 FS_TRUNCATE = 1 << 14
 FS_IOCTL_DEV = 1 << 15
+# Connecting to a pathname AF_UNIX socket bound outside the sandbox.
+FS_RESOLVE_UNIX = 1 << 16
 
 # What a read root is granted. Running a file counts as reading it, and a
 # directory has to be listable for an import to find anything in it.
@@ -91,7 +94,14 @@ SCOPE_MIN_ABI = 6
 
 # The only rights a rule on a non-directory may name; the kernel refuses the
 # rule with EINVAL if it names any other.
-FS_FILE_RIGHTS = FS_EXECUTE | FS_WRITE_FILE | FS_READ_FILE | FS_TRUNCATE | FS_IOCTL_DEV
+FS_FILE_RIGHTS = (
+    FS_EXECUTE
+    | FS_WRITE_FILE
+    | FS_READ_FILE
+    | FS_TRUNCATE
+    | FS_IOCTL_DEV
+    | FS_RESOLVE_UNIX
+)
 
 # A kernel that has no Landlock, or that is behind a policy forbidding it,
 # is a kernel to fall back from rather than fail on.
@@ -175,10 +185,10 @@ def _set_no_new_privs() -> None:
 
 
 # The newest ABI the mask table in handled_access() has been checked
-# against: 6, 7 and 8 add no filesystem right, so the table is complete
-# through 8. The nightly Landlock ABI workflow fails when a kernel reports
+# against: 10 and 11 add no filesystem right, so the table is complete
+# through 11. The nightly Landlock ABI workflow fails when a kernel reports
 # newer, which is the prompt to re-check the table.
-NEWEST_REVIEWED_ABI = 8
+NEWEST_REVIEWED_ABI = 11
 
 
 def handled_access(abi: int) -> int:
@@ -189,10 +199,10 @@ def handled_access(abi: int) -> int:
     than being fixed at one version's rights. ABI 4 adds network rights,
     which a filesystem ruleset does not handle, so it adds nothing here.
 
-    ABI 5 is the newest that adds a filesystem right. A kernel reporting
-    more than that is handled as 5, which means a filesystem right added by
+    ABI 9 is the newest that adds a filesystem right. A kernel reporting
+    more than that is handled as 9, which means a filesystem right added by
     some later ABI would go unhandled, and therefore unrestricted, until
-    this table learns about it. ABI 6, 7 and 8 exist and add none, so the
+    this table learns about it. ABI 10 and 11 exist and add none, so the
     table is complete today, but this is a known potential drift location:
     ``NEWEST_REVIEWED_ABI`` records how far the check has gone, and the
     nightly workflow in ``.github/workflows/py-landlock-abi.yaml`` fails
@@ -205,6 +215,8 @@ def handled_access(abi: int) -> int:
         handled |= FS_TRUNCATE
     if abi >= 5:
         handled |= FS_IOCTL_DEV
+    if abi >= 9:
+        handled |= FS_RESOLVE_UNIX
     return handled
 
 
@@ -295,7 +307,9 @@ def engage(read_roots: Iterable[str], write_roots: Iterable[str]) -> int | None:
 
     Read roots are granted execute, read-file and read-dir. Write roots are
     granted everything the ruleset handles. On ABI 6 and later the ruleset
-    also scopes abstract AF_UNIX sockets. Once this returns, nothing can
+    also scopes abstract AF_UNIX sockets, and on ABI 9 and later the worker
+    can connect only to pathname AF_UNIX sockets under a write root or bound
+    by itself or its descendants. Once this returns, nothing can
     widen the process's access again, including anything it goes on to
     execute.
     """
