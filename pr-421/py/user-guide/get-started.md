@@ -40,8 +40,8 @@ The table below lists how each provenance outcome can occur:
 |----|----|
 | A trusted Python [measure](#semantic-layer) | `Trusted` <img src="assets/figs/trusted-icon.svg" class="commons-documentation-marker" /> |
 | A [data dictionary metric](#definitions), possibly grouped or filtered with definitions | `Trusted` <img src="assets/figs/trusted-icon.svg" class="commons-documentation-marker" /> |
-| Custom SQL, including SQL that uses [data dictionary definitions](#definitions) | `Cited` <img src="assets/figs/citation-mark.svg" class="commons-documentation-marker" /> or `Untrusted` <img src="assets/figs/warning-icon.svg" class="commons-documentation-marker" /> |
-| Custom Python | `Cited` <img src="assets/figs/citation-mark.svg" class="commons-documentation-marker" /> or `Untrusted` <img src="assets/figs/warning-icon.svg" class="commons-documentation-marker" /> |
+| Custom SQL, including SQL that uses [data dictionary definitions](#definitions) | `Cited` <img src="assets/figs/citation-mark.svg" class="commons-documentation-marker" /> when the answer quotes a trusted source and `commons` verifies the quote; otherwise `Untrusted` <img src="assets/figs/warning-icon.svg" class="commons-documentation-marker" /> |
+| Custom Python | `Cited` <img src="assets/figs/citation-mark.svg" class="commons-documentation-marker" /> when the answer quotes a trusted source and `commons` verifies the quote; otherwise `Untrusted` <img src="assets/figs/warning-icon.svg" class="commons-documentation-marker" /> |
 | No data tool used (for example, the agent already had the information, or no accessible information answered the question) | No provenance outcome |
 
 The agent does not decide the provenance outcome. `commons` derives it from the tools the agent called and the citations it made.
