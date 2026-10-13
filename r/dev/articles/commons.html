@@ -228,6 +228,12 @@ information)</td>
 </table>
 <p>The agent itself does not determine the provenance outcome. commons
 derives it deterministically from the agent’s behavior.</p>
+<p>To turn off the lower-trust path altogether, use
+<code>commons(mode = "trusted only")</code>. In this mode, the agent
+can’t write its own SQL or R code; it answers only with trusted
+calculations. If no trusted calculation answers a question, it tells the
+user so. Since every answer comes from a trusted calculation, answers
+carry no provenance markers.</p>
 </div>
 <div class="section level2">
 <h2 id="information-layers">Information layers<a class="anchor" aria-label="anchor" href="#information-layers"></a>

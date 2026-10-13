@@ -125,6 +125,13 @@ occur:
 The agent itself does not determine the provenance outcome. commons
 derives it deterministically from the agent’s behavior.
 
+To turn off the lower-trust path altogether, use
+`commons(mode = "trusted only")`. In this mode, the agent can’t write
+its own SQL or R code; it answers only with trusted calculations. If no
+trusted calculation answers a question, it tells the user so. Since
+every answer comes from a trusted calculation, answers carry no
+provenance markers.
+
 ## Information layers
 
 commons distinguishes between two primary layers of information: the

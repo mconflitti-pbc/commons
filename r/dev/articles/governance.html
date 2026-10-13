@@ -98,6 +98,10 @@ to see. The system prompt, tool arguments, and tool results are also
 sent to the model provider, so the agent should not have access to data
 that you <a href="https://posit.co/blog/trust-llm-tools" class="external-link">do not trust
 that provider to process</a>.</p>
+<p>An agent created with <code>commons(mode = "trusted only")</code> has
+neither <code>run_sql</code> nor <code>run_r</code>. It can run only
+trusted calculations and inspect table schemas without sample rows, so
+the SQL and R code execution sections below don’t apply to it.</p>
 </div>
 <div class="section level2">
 <h2 id="sql-code-execution">SQL code execution<a class="anchor" aria-label="anchor" href="#sql-code-execution"></a>

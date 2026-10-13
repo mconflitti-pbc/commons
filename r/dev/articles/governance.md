@@ -28,6 +28,11 @@ sent to the model provider, so the agent should not have access to data
 that you [do not trust that provider to
 process](https://posit.co/blog/trust-llm-tools).
 
+An agent created with `commons(mode = "trusted only")` has neither
+`run_sql` nor `run_r`. It can run only trusted calculations and inspect
+table schemas without sample rows, so the SQL and R code execution
+sections below don’t apply to it.
+
 ## SQL code execution
 
 ### Destructive actions

@@ -63,6 +63,7 @@ untrusted.</p>
 <span>  context_layer <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span>,</span>
 <span>  instructions <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"normal"</span>, <span class="st">"trusted only"</span><span class="op">)</span>,</span>
 <span>  network <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"full"</span><span class="op">)</span>,</span>
 <span>  log <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  share_with <span class="op">=</span> <span class="cn">NULL</span></span>
@@ -109,10 +110,25 @@ system prompt, as a single string or the path to a text or Markdown file.</p>
 <span><span class="op">)</span></span></code></pre><p></p></div></dd>
 
 
+<dt id="arg-mode">mode<a class="anchor" aria-label="anchor" href="#arg-mode"></a></dt>
+<dd><p>Which analysis paths the agent may take. One of:</p><ul><li><p><code>"normal"</code> (the default): the agent prefers trusted calculations and,
+when none answers the question, falls back to writing its own SQL and R
+code.</p></li>
+<li><p><code>"trusted only"</code>: the agent answers only with trusted calculations:
+measures, governed metrics, and exact trusted queries. When none
+answers the question, it says so rather than writing its own code. The
+agent can still search context and inspect table schemas, but not
+sample rows. Because every answer comes from a trusted calculation,
+answers carry no provenance markers, and the agent needs no sandboxed
+R session. The agent must have at least one trusted calculation.</p></li>
+</ul></dd>
+
+
 <dt id="arg-network">network<a class="anchor" aria-label="anchor" href="#arg-network"></a></dt>
 <dd><p>Whether the agent's R session has network access. One
 of
-<code>"none"</code> (the default) or <code>"full"</code>. The session uses OS sandboxing on
+<code>"none"</code> (the default) or <code>"full"</code>. Must be <code>"none"</code> when
+<code>mode = "trusted only"</code>, since that mode has no R session. The session uses OS sandboxing on
 Linux and macOS. On unsupported hosts, local development can opt in to
 best-effort R guardrails with
 <code>options(commons.allow_unsafe_fallback = TRUE)</code>. These guardrails
@@ -185,8 +201,8 @@ eviction; change the cap with <code>options(commons.context_cache_max_size)</cod
     <h2 id="agent-tools">Agent tools<a class="anchor" aria-label="anchor" href="#agent-tools"></a></h2>
 
 
-<p>Depending on its semantic layer, context layer, and data sources, a commons
-agent receives some combination of these tools:</p><ul><li><p><code>search_pool</code> searches trusted calculations and semantic models.</p></li>
+<p>Depending on its semantic layer, context layer, data sources, and <code>mode</code>, a
+commons agent receives some combination of these tools:</p><ul><li><p><code>search_pool</code> searches trusted calculations and semantic models.</p></li>
 <li><p><code>search_catalog</code> searches a warehouse catalog.</p></li>
 <li><p><code>call_measure</code> invokes an R measure.</p></li>
 <li><p><code>call_metrics</code> invokes governed or warehouse-native metrics.</p></li>
@@ -198,7 +214,9 @@ determines and displays answer trust.</p></li>
 <li><p><code>run_sql</code> executes a read-only SQL query.</p></li>
 <li><p><code>run_r</code> executes R code to analyze results and render plots in the agent's
 R session.</p></li>
-</ul><p>These model-facing tools should be considered private. Their constructors
+</ul><p>With <code>mode = "trusted only"</code>, the agent never receives <code>run_sql</code> or <code>run_r</code>,
+and <code>describe_table</code> omits sample rows.</p>
+<p>These model-facing tools should be considered private. Their constructors
 are intentionally not exported, and their names, arguments, availability,
 and behavior may change without notice. Application code should configure
 an agent through <code>commons()</code> and its layer constructors rather than depend

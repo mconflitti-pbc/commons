@@ -2,6 +2,24 @@
 
 ## commons (development version)
 
+- [`commons()`](https://posit-dev.github.io/commons/r/dev/reference/commons.md)
+  gains a `mode` argument. With `mode = "trusted only"`, the agent
+  answers only with trusted calculations. It never writes its own SQL or
+  R, and it tells the user when no trusted calculation answers a
+  question. These answers carry no provenance markers.
+
+- On macOS, R code run by `run_r` can now start other programs, such as
+  through [`system()`](https://rdrr.io/r/base/system.html) or
+  [`system2()`](https://rdrr.io/r/base/system2.html). The sandbox
+  previously stopped every program it started. Those programs run under
+  the same sandbox as the R session.
+
+- The CSS classes on `run_r`’s display are now `commons-run-display`,
+  `commons-run-details`, `commons-run-code`, and `commons-run-plot`,
+  without the `-r`, because the Python package’s code tool uses the same
+  classes. App CSS that targets the old `commons-run-r-*` names needs
+  updating.
+
 ## commons 0.1.1
 
 CRAN release: 2026-10-07

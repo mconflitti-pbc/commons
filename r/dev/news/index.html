@@ -39,7 +39,10 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="commons-development-version">commons (development version)<a class="anchor" aria-label="anchor" href="#commons-development-version"></a></h2>
-</div>
+<ul><li><p><code><a href="../reference/commons.html">commons()</a></code> gains a <code>mode</code> argument. With <code>mode = "trusted only"</code>, the agent answers only with trusted calculations. It never writes its own SQL or R, and it tells the user when no trusted calculation answers a question. These answers carry no provenance markers.</p></li>
+<li><p>On macOS, R code run by <code>run_r</code> can now start other programs, such as through <code><a href="https://rdrr.io/r/base/system.html" class="external-link">system()</a></code> or <code><a href="https://rdrr.io/r/base/system2.html" class="external-link">system2()</a></code>. The sandbox previously stopped every program it started. Those programs run under the same sandbox as the R session.</p></li>
+<li><p>The CSS classes on <code>run_r</code>’s display are now <code>commons-run-display</code>, <code>commons-run-details</code>, <code>commons-run-code</code>, and <code>commons-run-plot</code>, without the <code>-r</code>, because the Python package’s code tool uses the same classes. App CSS that targets the old <code>commons-run-r-*</code> names needs updating.</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.1" id="commons-011">commons 0.1.1<a class="anchor" aria-label="anchor" href="#commons-011"></a></h2><p class="text-muted">CRAN release: 2026-10-07</p>
 <ul><li><p>Fixes an issue with the R code sandbox where the generated policy would be too long when there were thousands of R packages installed.</p></li>

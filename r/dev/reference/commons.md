@@ -17,6 +17,7 @@ commons(
   context_layer = NULL,
   ...,
   instructions = NULL,
+  mode = c("normal", "trusted only"),
   network = c("none", "full"),
   log = FALSE,
   share_with = NULL
@@ -67,11 +68,29 @@ commons(
         instructions = "Use the organization's fiscal-year conventions."
       )
 
+- mode:
+
+  Which analysis paths the agent may take. One of:
+
+  - `"normal"` (the default): the agent prefers trusted calculations
+    and, when none answers the question, falls back to writing its own
+    SQL and R code.
+
+  - `"trusted only"`: the agent answers only with trusted calculations:
+    measures, governed metrics, and exact trusted queries. When none
+    answers the question, it says so rather than writing its own code.
+    The agent can still search context and inspect table schemas, but
+    not sample rows. Because every answer comes from a trusted
+    calculation, answers carry no provenance markers, and the agent
+    needs no sandboxed R session. The agent must have at least one
+    trusted calculation.
+
 - network:
 
   Whether the agent's R session has network access. One of `"none"` (the
-  default) or `"full"`. The session uses OS sandboxing on Linux and
-  macOS. On unsupported hosts, local development can opt in to
+  default) or `"full"`. Must be `"none"` when `mode = "trusted only"`,
+  since that mode has no R session. The session uses OS sandboxing on
+  Linux and macOS. On unsupported hosts, local development can opt in to
   best-effort R guardrails with
   `options(commons.allow_unsafe_fallback = TRUE)`. These guardrails are
   not a security boundary.
@@ -158,8 +177,8 @@ least-recently-used eviction; change the cap with
 
 ## Agent tools
 
-Depending on its semantic layer, context layer, and data sources, a
-commons agent receives some combination of these tools:
+Depending on its semantic layer, context layer, data sources, and
+`mode`, a commons agent receives some combination of these tools:
 
 - `search_pool` searches trusted calculations and semantic models.
 
@@ -182,6 +201,9 @@ commons agent receives some combination of these tools:
 
 - `run_r` executes R code to analyze results and render plots in the
   agent's R session.
+
+With `mode = "trusted only"`, the agent never receives `run_sql` or
+`run_r`, and `describe_table` omits sample rows.
 
 These model-facing tools should be considered private. Their
 constructors are intentionally not exported, and their names, arguments,
