@@ -382,6 +382,25 @@ def test_the_running_interpreter_finds_its_own_table() -> None:
     assert struct.calcsize("P") == pointer_size
 
 
+def test_the_userns_fallback_reads_the_same_abi_as_the_filter() -> None:
+    """Live: pivot_root and capset are numbered for the binary, not uname.
+
+    The 32-bit CI legs run this under the host's 64-bit personality, where
+    the 64-bit numbers would call something else entirely through the
+    32-bit ABI. There is no 32-bit table, so the fallback is refused there.
+    """
+    if platform.system() != "Linux":
+        pytest.skip("/proc/self/exe is a Linux facility")
+    arch = _seccomp.current_arch()
+    assert arch is not None
+    expected = _userns._SYSCALLS.get(arch.name)
+    if expected is None:
+        with pytest.raises(_userns.UsernsUnavailable):
+            _userns._syscall_numbers()
+    else:
+        assert _userns._syscall_numbers() == expected
+
+
 def test_seccomp_is_unavailable_where_the_kernel_has_no_seccomp() -> None:
     if platform.system() == "Linux":
         pytest.skip("this host has a kernel that may well offer seccomp")
