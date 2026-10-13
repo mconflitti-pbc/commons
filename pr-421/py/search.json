@@ -48,7 +48,7 @@
     "href": "user-guide/governance.html#communication-with-the-main-app-process",
     "title": "Security and governance for commons agents",
     "section": "Communication with the main app process",
-    "text": "Communication with the main app process\nThe subprocess starts with a small allowlist of environment variables rather than inheriting the application’s complete environment, and in Python’s isolated mode, which ignores PYTHON* variables and the user’s site directory. In particular, API keys, session tokens, and database URLs are not inherited.\nCommunication happens through pipes between the two processes. commons copies registered result handles and measure source into the subprocess, then receives captured output and plots in return. Function objects and database connections are not transferred. A measure whose source cannot be defined in the subprocess is skipped.",
+    "text": "Communication with the main app process\nThe subprocess starts with a small allowlist of environment variables rather than inheriting the application’s complete environment. In particular, API keys, session tokens, and database URLs are not inherited. The subprocess also runs in Python’s isolated mode, which ignores PYTHON* environment variables and the user’s site directory.\nCommunication happens through pipes between the two processes. commons copies registered result handles and measure source into the subprocess, then receives captured output and plots in return. Function objects and database connections are not transferred. A measure whose source cannot be defined in the subprocess is skipped.",
     "crumbs": [
       "User Guide",
       "Security and governance for commons agents"

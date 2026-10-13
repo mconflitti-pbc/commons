@@ -366,7 +366,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="communication-with-the-main-app-process" class="level2">
 <h2 class="anchored" data-anchor-id="communication-with-the-main-app-process">Communication with the main app process</h2>
-<p>The subprocess starts with a small allowlist of environment variables rather than inheriting the application’s complete environment, and in Python’s isolated mode, which ignores <code>PYTHON*</code> variables and the user’s site directory. In particular, API keys, session tokens, and database URLs are not inherited.</p>
+<p>The subprocess starts with a small allowlist of environment variables rather than inheriting the application’s complete environment. In particular, API keys, session tokens, and database URLs are not inherited. The subprocess also runs in Python’s isolated mode, which ignores <code>PYTHON*</code> environment variables and the user’s site directory.</p>
 <p>Communication happens through pipes between the two processes. <code>commons</code> copies registered result handles and measure source into the subprocess, then receives captured output and plots in return. Function objects and database connections are not transferred. A measure whose source cannot be defined in the subprocess is skipped.</p>
 </section>
 </section>
