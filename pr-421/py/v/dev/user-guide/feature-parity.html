@@ -287,7 +287,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td><code>gt</code> tables and <code>ggplot</code> figures returned by measures, rendered in the chat</td>
-<td>Renders data-frame results from measures as tables. A measure shows a plot only when it builds its own tool result with the plot in its HTML. The agent can also draw plots with matplotlib in its own Python code</td>
+<td>Renders a data frame returned by a measure as a plain table. A matplotlib figure or a <code>great_tables</code> table returned by a measure is not rendered; to show one, the measure must build its own tool result and HTML</td>
 </tr>
 <tr class="odd">
 <td><code>trajectory_read()</code> and <code>trajectory_review()</code>, for reading and annotating logged conversations</td>
