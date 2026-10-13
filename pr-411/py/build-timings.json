@@ -1,473 +1,473 @@
 {
-  "build_time": "2026-10-10T01:52:45Z",
-  "total_seconds": 67.793,
+  "build_time": "2026-10-13T03:29:11Z",
+  "total_seconds": 83.818,
   "versions": {
     "dev": {
-      "seconds": 33.886,
+      "seconds": 41.954,
       "pages": [
         {
           "page": "user-guide/governance.qmd",
-          "seconds": 9.704,
+          "seconds": 13.381,
           "frozen": false
         },
         {
           "page": "index.qmd",
-          "seconds": 2.519,
+          "seconds": 3.697,
           "frozen": false
         },
         {
           "page": "user-guide/get-started.qmd",
-          "seconds": 0.904,
+          "seconds": 1.071,
           "frozen": false
         },
         {
           "page": "package-info.qmd",
-          "seconds": 0.735,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.queue_restore_reminder.qmd",
-          "seconds": 0.731,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.set_turns.qmd",
-          "seconds": 0.725,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.qmd",
-          "seconds": 0.72,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.citation_corpus.qmd",
-          "seconds": 0.67,
+          "seconds": 0.9,
           "frozen": false
         },
         {
           "page": "reference/Commons.chat_structured_async.qmd",
-          "seconds": 0.655,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.extract_data.qmd",
-          "seconds": 0.6,
+          "seconds": 0.73,
           "frozen": false
         },
         {
           "page": "reference/Commons.prewarm.qmd",
-          "seconds": 0.588,
+          "seconds": 0.728,
           "frozen": false
         },
         {
-          "page": "reference/Commons.add_turn.qmd",
-          "seconds": 0.562,
+          "page": "reference/Commons.queue_restore_reminder.qmd",
+          "seconds": 0.676,
           "frozen": false
         },
         {
-          "page": "reference/Commons.chat.qmd",
-          "seconds": 0.558,
+          "page": "reference/Commons.extract_data.qmd",
+          "seconds": 0.66,
           "frozen": false
         },
         {
-          "page": "reference/Commons.chat_async.qmd",
-          "seconds": 0.546,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.extract_data_async.qmd",
-          "seconds": 0.531,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.chat_structured.qmd",
-          "seconds": 0.517,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.__repr__.qmd",
-          "seconds": 0.515,
-          "frozen": false
-        },
-        {
-          "page": "reference/Tag.qmd",
-          "seconds": 0.481,
+          "page": "reference/Commons.citation_corpus.qmd",
+          "seconds": 0.631,
           "frozen": false
         },
         {
           "page": "reference/index.qmd",
-          "seconds": 0.462,
+          "seconds": 0.625,
           "frozen": false
         },
         {
-          "page": "reference/Measure.qmd",
-          "seconds": 0.456,
+          "page": "reference/Commons.extract_data_async.qmd",
+          "seconds": 0.62,
           "frozen": false
         },
         {
-          "page": "reference/ui.app.qmd",
-          "seconds": 0.451,
+          "page": "reference/Commons.qmd",
+          "seconds": 0.593,
           "frozen": false
         },
         {
-          "page": "reference/ui.asset_base_url.qmd",
-          "seconds": 0.433,
+          "page": "reference/Tag.qmd",
+          "seconds": 0.56,
           "frozen": false
         },
         {
           "page": "reference/ContextLayer.qmd",
-          "seconds": 0.428,
-          "frozen": false
-        },
-        {
-          "page": "reference/DataSource.from_board.qmd",
-          "seconds": 0.425,
-          "frozen": false
-        },
-        {
-          "page": "reference/DataSource.from_frames.qmd",
-          "seconds": 0.424,
+          "seconds": 0.545,
           "frozen": false
         },
         {
           "page": "reference/DataSource.qmd",
-          "seconds": 0.424,
+          "seconds": 0.541,
           "frozen": false
         },
         {
-          "page": "reference/Commons.__deepcopy__.qmd",
-          "seconds": 0.421,
+          "page": "reference/Commons.chat.qmd",
+          "seconds": 0.54,
           "frozen": false
         },
         {
-          "page": "reference/SemanticLayer.qmd",
-          "seconds": 0.421,
-          "frozen": false
-        },
-        {
-          "page": "reference/DataSource.from_engine.qmd",
-          "seconds": 0.418,
-          "frozen": false
-        },
-        {
-          "page": "reference/semantic_layer.qmd",
-          "seconds": 0.418,
-          "frozen": false
-        },
-        {
-          "page": "reference/Injected.qmd",
-          "seconds": 0.417,
-          "frozen": false
-        },
-        {
-          "page": "reference/measure.qmd",
-          "seconds": 0.413,
-          "frozen": false
-        },
-        {
-          "page": "reference/data_source.qmd",
-          "seconds": 0.412,
-          "frozen": false
-        },
-        {
-          "page": "reference/ui.theme.qmd",
-          "seconds": 0.411,
-          "frozen": false
-        },
-        {
-          "page": "reference/list_tables.qmd",
-          "seconds": 0.409,
-          "frozen": false
-        },
-        {
-          "page": "reference/DataSource.dialect.qmd",
-          "seconds": 0.406,
-          "frozen": false
-        },
-        {
-          "page": "reference/DataSource.query.qmd",
-          "seconds": 0.406,
+          "page": "reference/DataSource.from_board.qmd",
+          "seconds": 0.538,
           "frozen": false
         },
         {
           "page": "reference/context_layer.qmd",
-          "seconds": 0.406,
+          "seconds": 0.538,
           "frozen": false
         },
         {
-          "page": "reference/ui.commons_chat_dependency.qmd",
-          "seconds": 0.406,
+          "page": "reference/Commons.__deepcopy__.qmd",
+          "seconds": 0.536,
           "frozen": false
         },
         {
-          "page": "reference/Commons.stream_async.qmd",
-          "seconds": 0.405,
+          "page": "reference/Commons.chat_structured.qmd",
+          "seconds": 0.535,
+          "frozen": false
+        },
+        {
+          "page": "reference/Measure.qmd",
+          "seconds": 0.535,
+          "frozen": false
+        },
+        {
+          "page": "reference/DataSource.from_engine.qmd",
+          "seconds": 0.531,
           "frozen": false
         },
         {
           "page": "reference/DataSource.ensure_loaded.qmd",
-          "seconds": 0.405,
+          "seconds": 0.529,
           "frozen": false
         },
         {
-          "page": "reference/ui.server.qmd",
-          "seconds": 0.405,
+          "page": "reference/semantic_layer.qmd",
+          "seconds": 0.529,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.__repr__.qmd",
+          "seconds": 0.527,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.add_turn.qmd",
+          "seconds": 0.527,
           "frozen": false
         },
         {
           "page": "reference/Commons.to_solver.qmd",
-          "seconds": 0.401,
+          "seconds": 0.527,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.stream_async.qmd",
+          "seconds": 0.523,
+          "frozen": false
+        },
+        {
+          "page": "reference/measure.qmd",
+          "seconds": 0.522,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.chat_async.qmd",
+          "seconds": 0.52,
+          "frozen": false
+        },
+        {
+          "page": "reference/data_source.qmd",
+          "seconds": 0.52,
+          "frozen": false
+        },
+        {
+          "page": "reference/SemanticLayer.qmd",
+          "seconds": 0.518,
+          "frozen": false
+        },
+        {
+          "page": "reference/ui.theme.qmd",
+          "seconds": 0.518,
+          "frozen": false
+        },
+        {
+          "page": "reference/ui.server.qmd",
+          "seconds": 0.514,
+          "frozen": false
+        },
+        {
+          "page": "reference/ui.app.qmd",
+          "seconds": 0.513,
+          "frozen": false
+        },
+        {
+          "page": "reference/list_tables.qmd",
+          "seconds": 0.511,
           "frozen": false
         },
         {
           "page": "reference/Commons.stream.qmd",
-          "seconds": 0.395,
+          "seconds": 0.509,
+          "frozen": false
+        },
+        {
+          "page": "reference/DataSource.dialect.qmd",
+          "seconds": 0.508,
+          "frozen": false
+        },
+        {
+          "page": "reference/Injected.qmd",
+          "seconds": 0.507,
+          "frozen": false
+        },
+        {
+          "page": "reference/DataSource.query.qmd",
+          "seconds": 0.505,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.set_turns.qmd",
+          "seconds": 0.501,
+          "frozen": false
+        },
+        {
+          "page": "reference/ui.commons_chat_dependency.qmd",
+          "seconds": 0.498,
+          "frozen": false
+        },
+        {
+          "page": "reference/DataSource.from_frames.qmd",
+          "seconds": 0.497,
+          "frozen": false
+        },
+        {
+          "page": "reference/ui.asset_base_url.qmd",
+          "seconds": 0.495,
           "frozen": false
         },
         {
           "page": "skills.qmd",
-          "seconds": 0.386,
+          "seconds": 0.474,
           "frozen": false
         },
         {
           "page": "user-guide/feature-parity.qmd",
-          "seconds": 0.361,
+          "seconds": 0.451,
           "frozen": false
         }
       ]
     },
     "0.1.0b2": {
-      "seconds": 33.907,
+      "seconds": 41.864,
       "pages": [
         {
           "page": "user-guide/governance.qmd",
-          "seconds": 9.732,
+          "seconds": 13.303,
           "frozen": false
         },
         {
           "page": "index.qmd",
-          "seconds": 2.523,
+          "seconds": 3.62,
           "frozen": false
         },
         {
           "page": "user-guide/get-started.qmd",
-          "seconds": 0.888,
+          "seconds": 1.081,
           "frozen": false
         },
         {
           "page": "package-info.qmd",
-          "seconds": 0.736,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.queue_restore_reminder.qmd",
-          "seconds": 0.729,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.set_turns.qmd",
-          "seconds": 0.725,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.qmd",
-          "seconds": 0.722,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.citation_corpus.qmd",
-          "seconds": 0.67,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.chat_structured_async.qmd",
-          "seconds": 0.631,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.extract_data.qmd",
-          "seconds": 0.612,
+          "seconds": 0.866,
           "frozen": false
         },
         {
           "page": "reference/Commons.prewarm.qmd",
-          "seconds": 0.589,
+          "seconds": 0.776,
           "frozen": false
         },
         {
-          "page": "reference/Commons.add_turn.qmd",
-          "seconds": 0.565,
+          "page": "reference/Commons.qmd",
+          "seconds": 0.746,
           "frozen": false
         },
         {
-          "page": "reference/Commons.chat_async.qmd",
-          "seconds": 0.548,
+          "page": "reference/Commons.extract_data.qmd",
+          "seconds": 0.735,
           "frozen": false
         },
         {
-          "page": "reference/Commons.chat.qmd",
-          "seconds": 0.547,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.chat_structured.qmd",
-          "seconds": 0.519,
+          "page": "reference/Commons.queue_restore_reminder.qmd",
+          "seconds": 0.685,
           "frozen": false
         },
         {
           "page": "reference/Commons.extract_data_async.qmd",
-          "seconds": 0.519,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.__deepcopy__.qmd",
-          "seconds": 0.491,
-          "frozen": false
-        },
-        {
-          "page": "reference/Tag.qmd",
-          "seconds": 0.484,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.__repr__.qmd",
-          "seconds": 0.473,
+          "seconds": 0.667,
           "frozen": false
         },
         {
           "page": "reference/index.qmd",
-          "seconds": 0.454,
+          "seconds": 0.626,
           "frozen": false
         },
         {
-          "page": "reference/Measure.qmd",
-          "seconds": 0.451,
+          "page": "reference/Commons.citation_corpus.qmd",
+          "seconds": 0.597,
           "frozen": false
         },
         {
-          "page": "reference/ui.app.qmd",
-          "seconds": 0.436,
-          "frozen": false
-        },
-        {
-          "page": "reference/ui.asset_base_url.qmd",
-          "seconds": 0.435,
+          "page": "reference/Tag.qmd",
+          "seconds": 0.574,
           "frozen": false
         },
         {
           "page": "reference/ContextLayer.qmd",
-          "seconds": 0.43,
+          "seconds": 0.552,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.chat_structured_async.qmd",
+          "seconds": 0.551,
           "frozen": false
         },
         {
           "page": "reference/DataSource.from_board.qmd",
-          "seconds": 0.427,
+          "seconds": 0.541,
           "frozen": false
         },
         {
-          "page": "reference/DataSource.from_frames.qmd",
-          "seconds": 0.426,
+          "page": "reference/Commons.add_turn.qmd",
+          "seconds": 0.537,
           "frozen": false
         },
         {
-          "page": "reference/SemanticLayer.qmd",
-          "seconds": 0.426,
+          "page": "reference/Measure.qmd",
+          "seconds": 0.537,
           "frozen": false
         },
         {
           "page": "reference/DataSource.qmd",
-          "seconds": 0.425,
-          "frozen": false
-        },
-        {
-          "page": "reference/Injected.qmd",
-          "seconds": 0.42,
+          "seconds": 0.536,
           "frozen": false
         },
         {
           "page": "reference/DataSource.from_engine.qmd",
-          "seconds": 0.417,
+          "seconds": 0.53,
           "frozen": false
         },
         {
-          "page": "reference/data_source.qmd",
-          "seconds": 0.417,
-          "frozen": false
-        },
-        {
-          "page": "reference/measure.qmd",
-          "seconds": 0.416,
-          "frozen": false
-        },
-        {
-          "page": "reference/list_tables.qmd",
-          "seconds": 0.414,
-          "frozen": false
-        },
-        {
-          "page": "reference/semantic_layer.qmd",
-          "seconds": 0.414,
-          "frozen": false
-        },
-        {
-          "page": "reference/ui.theme.qmd",
-          "seconds": 0.413,
-          "frozen": false
-        },
-        {
-          "page": "reference/DataSource.query.qmd",
-          "seconds": 0.406,
-          "frozen": false
-        },
-        {
-          "page": "reference/ui.commons_chat_dependency.qmd",
-          "seconds": 0.406,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.stream_async.qmd",
-          "seconds": 0.405,
-          "frozen": false
-        },
-        {
-          "page": "reference/ui.server.qmd",
-          "seconds": 0.405,
-          "frozen": false
-        },
-        {
-          "page": "reference/DataSource.dialect.qmd",
-          "seconds": 0.404,
-          "frozen": false
-        },
-        {
-          "page": "reference/Commons.to_solver.qmd",
-          "seconds": 0.402,
+          "page": "reference/Commons.chat.qmd",
+          "seconds": 0.529,
           "frozen": false
         },
         {
           "page": "reference/DataSource.ensure_loaded.qmd",
-          "seconds": 0.402,
+          "seconds": 0.527,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.chat_structured.qmd",
+          "seconds": 0.526,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.to_solver.qmd",
+          "seconds": 0.525,
           "frozen": false
         },
         {
           "page": "reference/context_layer.qmd",
-          "seconds": 0.399,
+          "seconds": 0.525,
+          "frozen": false
+        },
+        {
+          "page": "reference/measure.qmd",
+          "seconds": 0.523,
+          "frozen": false
+        },
+        {
+          "page": "reference/semantic_layer.qmd",
+          "seconds": 0.522,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.stream_async.qmd",
+          "seconds": 0.521,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.__repr__.qmd",
+          "seconds": 0.52,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.chat_async.qmd",
+          "seconds": 0.52,
+          "frozen": false
+        },
+        {
+          "page": "reference/SemanticLayer.qmd",
+          "seconds": 0.52,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.__deepcopy__.qmd",
+          "seconds": 0.519,
+          "frozen": false
+        },
+        {
+          "page": "reference/data_source.qmd",
+          "seconds": 0.518,
+          "frozen": false
+        },
+        {
+          "page": "reference/ui.theme.qmd",
+          "seconds": 0.516,
+          "frozen": false
+        },
+        {
+          "page": "reference/list_tables.qmd",
+          "seconds": 0.511,
           "frozen": false
         },
         {
           "page": "reference/Commons.stream.qmd",
-          "seconds": 0.395,
+          "seconds": 0.51,
+          "frozen": false
+        },
+        {
+          "page": "reference/DataSource.query.qmd",
+          "seconds": 0.509,
+          "frozen": false
+        },
+        {
+          "page": "reference/ui.app.qmd",
+          "seconds": 0.509,
+          "frozen": false
+        },
+        {
+          "page": "reference/ui.server.qmd",
+          "seconds": 0.508,
+          "frozen": false
+        },
+        {
+          "page": "reference/Commons.set_turns.qmd",
+          "seconds": 0.506,
+          "frozen": false
+        },
+        {
+          "page": "reference/ui.commons_chat_dependency.qmd",
+          "seconds": 0.505,
+          "frozen": false
+        },
+        {
+          "page": "reference/ui.asset_base_url.qmd",
+          "seconds": 0.504,
+          "frozen": false
+        },
+        {
+          "page": "reference/DataSource.dialect.qmd",
+          "seconds": 0.503,
+          "frozen": false
+        },
+        {
+          "page": "reference/Injected.qmd",
+          "seconds": 0.502,
+          "frozen": false
+        },
+        {
+          "page": "reference/DataSource.from_frames.qmd",
+          "seconds": 0.498,
           "frozen": false
         },
         {
           "page": "skills.qmd",
-          "seconds": 0.391,
+          "seconds": 0.477,
           "frozen": false
         },
         {
           "page": "user-guide/feature-parity.qmd",
-          "seconds": 0.368,
+          "seconds": 0.451,
           "frozen": false
         }
       ]
