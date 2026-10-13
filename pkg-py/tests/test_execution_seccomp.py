@@ -14,6 +14,7 @@ import json
 import pathlib
 import platform
 import socket
+import struct
 import subprocess
 import sys
 from collections.abc import Callable
@@ -316,33 +317,34 @@ def test_the_sandbox_filter_leaves_opening_a_socket_alone(name: str) -> None:
     assert decision == _seccomp.SECCOMP_RET_ALLOW
 
 
+def elf_header(machine: int, elf_class: int, data: int = 1) -> bytes:
+    """The first 20 bytes of an ELF file, as much as arch detection reads."""
+    ident = b"\x7fELF" + bytes([elf_class, data, 1]) + bytes(9)
+    return ident + (2).to_bytes(2, "little") + machine.to_bytes(2, "little")
+
+
 @pytest.mark.parametrize(
-    ("machine", "pointer_size", "expected"),
+    ("machine", "elf_class", "expected"),
     [
-        ("x86_64", 8, "x86_64"),
-        ("amd64", 8, "x86_64"),
-        ("aarch64", 8, "aarch64"),
-        ("arm64", 8, "aarch64"),
-        ("i686", 4, "i386"),
-        ("i386", 4, "i386"),
-        ("armv7l", 4, "arm"),
-        ("armv6l", 4, "arm"),
-        ("armv8l", 4, "arm"),
-        # x32 is the only thing that reports a 64-bit machine with 32-bit
-        # pointers, and it is neither of the tables that pair might suggest.
-        ("x86_64", 4, None),
-        ("amd64", 4, None),
-        ("aarch64", 4, None),
+        (62, 2, "x86_64"),
+        (183, 2, "aarch64"),
+        (3, 1, "i386"),
+        (40, 1, "arm"),
+        # x32 is EM_X86_64 in a 32-bit class, and neither of the tables that
+        # pair might suggest.
+        (62, 1, None),
+        (183, 1, None),
+        (3, 2, None),
         # Fail closed: with no table there is no filter worth installing.
-        ("riscv64", 8, None),
-        ("s390x", 8, None),
-        ("ppc64le", 8, None),
+        (243, 2, None),  # EM_RISCV
+        (22, 2, None),  # EM_S390
+        (21, 2, None),  # EM_PPC64
     ],
 )
-def test_the_arch_is_read_from_the_machine_and_the_pointer_size(
-    machine: str, pointer_size: int, expected: str | None
+def test_the_arch_is_read_from_the_elf_machine_and_class(
+    machine: int, elf_class: int, expected: str | None
 ) -> None:
-    arch = _seccomp.arch_for(machine, pointer_size)
+    arch = _seccomp.arch_for(elf_header(machine, elf_class))
     assert (arch.name if arch is not None else None) == expected
 
 
@@ -351,10 +353,33 @@ def test_x32_gets_no_table_rather_than_the_i386_one() -> None:
 
     Its calls carry the x86_64 audit tag and set the x32 bit, so the i386
     table would build a filter whose very first check rejects every syscall
-    the process makes. A 32-bit i386 process is not this case: the kernel
-    reports i686 to it, so it finds its own table.
+    the process makes.
     """
-    assert _seccomp.arch_for("x86_64", 4) is None
+    assert _seccomp.arch_for(elf_header(62, 1)) is None
+
+
+@pytest.mark.parametrize(
+    "header",
+    [
+        b"",
+        b"\x7fELF\x02\x01",
+        b"#!/bin/sh\n" + bytes(10),
+        # Big-endian: the audit tags in the tables are the little-endian ones.
+        elf_header(40, 1, data=2),
+    ],
+)
+def test_a_header_with_no_table_fails_closed(header: bytes) -> None:
+    assert _seccomp.arch_for(header) is None
+
+
+def test_the_running_interpreter_finds_its_own_table() -> None:
+    """Live: the table read from /proc/self/exe matches this process's pointers."""
+    if platform.system() != "Linux":
+        pytest.skip("/proc/self/exe is a Linux facility")
+    arch = _seccomp.current_arch()
+    assert arch is not None
+    pointer_size = 8 if arch.name in ("x86_64", "aarch64") else 4
+    assert struct.calcsize("P") == pointer_size
 
 
 def test_seccomp_is_unavailable_where_the_kernel_has_no_seccomp() -> None:
