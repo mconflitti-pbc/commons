@@ -455,6 +455,8 @@ test_that("describe_table_tool reports columns and their types", {
   res <- describe_table_tool(test_source(), "sales")
   expect_equal(res@extra$display$title, "Inspected a table")
   expect_match(res@value, "\\|order_id +\\|character +\\|")
+  # Row values reach the model only through run_sql (#319).
+  expect_no_match(res@value, "EMEA", fixed = TRUE)
 })
 
 test_that("search_context_tool handles a missing context layer", {

@@ -380,6 +380,8 @@ def test_describe_table_shows_columns_and_their_types(plain: DataSource) -> None
 
     assert "Columns of `sales`:" in body
     assert "| revenue | DOUBLE |" in body
+    # Row values reach the model only through run_sql (#319).
+    assert "EMEA" not in body
 
 
 def test_a_table_with_no_rows_is_still_described_column_by_column() -> None:
