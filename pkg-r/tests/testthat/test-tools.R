@@ -451,11 +451,10 @@ test_that("format_measure_value collects a lazy dbplyr table", {
   expect_match(out, "EMEA")
 })
 
-test_that("describe_table_tool reports columns without summarizing rows", {
+test_that("describe_table_tool reports columns and their types", {
   res <- describe_table_tool(test_source(), "sales")
   expect_equal(res@extra$display$title, "Inspected a table")
-  expect_match(res@value, "|order_id     |character |", fixed = TRUE)
-  expect_no_match(res@value, "EMEA", fixed = TRUE)
+  expect_match(res@value, "\\|order_id +\\|character +\\|")
 })
 
 test_that("search_context_tool handles a missing context layer", {

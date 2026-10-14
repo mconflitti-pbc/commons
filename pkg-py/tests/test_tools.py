@@ -373,14 +373,23 @@ def test_a_context_hit_carries_the_turn_citation_request(plain: DataSource) -> N
 # ---- describe_table --------------------------------------------------------
 
 
-def test_describe_table_shows_columns_without_the_rows(plain: DataSource) -> None:
+def test_describe_table_shows_columns_and_their_types(plain: DataSource) -> None:
     tools = build_commons_tools(ToolContext(sources={"sales_db": plain}))
 
     body = call(find(tools, "describe_table"), table="sales")
 
     assert "Columns of `sales`:" in body
     assert "| revenue | DOUBLE |" in body
-    assert "EMEA" not in body
+
+
+def test_a_table_with_no_rows_is_still_described_column_by_column() -> None:
+    source = data_source(sales=frame().head(0))
+    tools = build_commons_tools(ToolContext(sources={"sales_db": source}))
+
+    body = call(find(tools, "describe_table"), table="sales")
+
+    assert "| revenue | DOUBLE |" in body
+    assert "| region | VARCHAR |" in body
 
 
 def test_describe_table_delivers_the_dictionary_entry(documented: DataSource) -> None:

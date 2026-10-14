@@ -318,9 +318,9 @@ test_that("a failed pin read surfaces at use and is retried, not cached", {
   expect_error(source_describe(src, "orders"), "Failed to read pin")
 
   suppressMessages(
-    pins::pin_write(board, data.frame(order_id = 1:5), "team-orders", type = "rds")
+    pins::pin_write(board, data.frame(id = 1:5), "team-orders", type = "rds")
   )
-  expect_equal(source_describe(src, "orders")$schema$column, "order_id")
+  expect_equal(source_describe(src, "orders")$schema$column, "id")
 })
 
 test_that("a pin that isn't a data frame errors clearly", {
