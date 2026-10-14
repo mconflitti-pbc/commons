@@ -10,7 +10,6 @@ from __future__ import annotations
 import asyncio
 import os
 import signal
-import sys
 import time
 from datetime import date
 from typing import Annotated
@@ -22,7 +21,7 @@ from pydantic import Field
 from commons import measure, semantic_layer
 from commons._execution._backend import WORKER_SCRIPT, LocalBackend, LocalSession
 from commons._execution._driver import Failure, Worker
-from commons._execution._protocol import Error, Result
+from commons._execution._protocol import Error, Ready, Result, Text, encode_message
 from commons._execution._sandbox import protection_mode
 from commons._handles import HandleStore
 from commons._measures import Injected
@@ -108,6 +107,9 @@ def group_gone(pid: int):
             os.killpg(pid, 0)
         except ProcessLookupError:
             return True
+        except PermissionError:
+            # macOS answers EPERM while the group's last members are exiting.
+            return False
         return False
 
     return check
@@ -155,7 +157,7 @@ async def test_printed_output_comes_back_with_the_result():
     async with make_worker() as worker:
         reply = await worker.run("print('hello')")
         assert isinstance(reply, Result)
-        assert reply.stdout == "hello\n"
+        assert reply.output == (Text(stream="stdout", text="hello\n"),)
 
 
 async def test_calls_are_serialized_one_at_a_time():
@@ -355,18 +357,37 @@ async def test_a_child_ignoring_sigterm_does_not_outlive_the_close():
     )
 
 
-@pytest.mark.skipif(
-    sys.platform == "darwin" and sys.version_info >= (3, 14),
-    reason="asyncio on 3.14 reads macOS's waitid() report of a stopped child "
-    "as an exit and blocks the event loop in waitpid() until it really exits",
-)
-async def test_a_worker_that_stops_reading_fails_the_call_instead_of_hanging():
-    async with make_worker(call_timeout=0.5) as worker:
+@pytest.mark.skipif(not hasattr(os, "waitid"), reason="needs os.waitid")
+async def test_a_worker_that_stops_itself_is_killed_and_reported_as_a_crash():
+    async with make_worker(call_timeout=30) as worker:
         await worker.run("1")
         process = process_of(worker)
-        # A stopped worker cannot drain its stdin; a call bigger than the
-        # pipe buffer would block the write forever without a bound on it.
-        process.send_signal(signal.SIGSTOP)
+        started = time.monotonic()
+        reply = await worker.run(
+            "import os, signal\nos.kill(os.getpid(), signal.SIGSTOP)"
+        )
+        assert isinstance(reply, Failure)
+        assert "crashed" in reply.message
+        # Killed when it stopped, rather than when the call timed out.
+        assert time.monotonic() - started < 10
+        assert process.returncode == -signal.SIGKILL
+        reply = await worker.run("1 + 1")
+        assert isinstance(reply, Result)
+        assert reply.value == 2
+
+
+async def test_a_worker_that_stops_reading_fails_the_call_instead_of_hanging(tmp_path):
+    # A worker that says it is ready and then never reads stdin. Writing it a
+    # call bigger than the pipe buffer blocks until the write's time limit.
+    script = tmp_path / "worker.py"
+    script.write_text(
+        "import sys, time\n"
+        f"sys.stdout.buffer.write({encode_message(Ready())!r})\n"
+        "sys.stdout.flush()\n"
+        "time.sleep(60)\n"
+    )
+    backend = LocalBackend(worker_script=script, terminate_grace=0.1)
+    async with make_worker(backend=backend, call_timeout=0.5) as worker:
         reply = await worker.run("x = " + "1" * (1024 * 1024))
         assert isinstance(reply, Failure)
         assert "stopped reading" in reply.message
@@ -692,17 +713,42 @@ async def test_aclose_during_a_reap_still_kills_a_sigterm_ignoring_worker():
     assert process.returncode is not None
 
 
-async def test_cancelling_a_call_shuts_the_worker_down():
+async def test_cancelling_a_call_interrupts_it_and_keeps_the_session():
     async with make_worker() as worker:
         await worker.run("x = 5")
         call = asyncio.ensure_future(worker.run("import time; time.sleep(30)"))
-        await asyncio.sleep(0.2)
+        await asyncio.sleep(0.5)
+        started = time.monotonic()
         call.cancel()
         with pytest.raises(asyncio.CancelledError):
             await call
-        # The cancelled call's worker is gone rather than still computing,
-        # so its late reply cannot poison the next call's channel.
+        # The interrupt stopped the sleep, and its reply was read before the
+        # lock was released, so the next call gets its own reply.
+        assert time.monotonic() - started < 5
+        assert worker._session is not None
+        reply = await worker.run("x")
+        assert isinstance(reply, Result)
+        assert reply.value == 5
+        assert not worker.take_restart()
+
+
+async def test_a_cancelled_call_that_ignores_the_interrupt_is_restarted():
+    async with make_worker(interrupt_grace=1) as worker:
+        await worker.run("x = 5")
+        code = (
+            "import signal, time\n"
+            "signal.signal(signal.SIGINT, signal.SIG_IGN)\n"
+            "time.sleep(30)\n"
+        )
+        call = asyncio.ensure_future(worker.run(code))
+        await asyncio.sleep(0.5)
+        call.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await call
+        # No reply came within the grace window, so the worker was shut
+        # down rather than left to answer into the next call's channel.
         assert worker._session is None
+        assert worker.take_restart()
         reply = await worker.run("x")
         assert isinstance(reply, Error)
         assert "NameError" in reply.message
@@ -812,7 +858,7 @@ async def test_a_worker_that_died_between_calls_loses_its_scratch_directory():
 # Model code can reach the worker's own module, and with it the protocol
 # channel; these tests use that to put a bad line on the channel on demand.
 WORKER_MODULE = "import sys, os; w = sys.modules['__main__']\n"
-BOGUS_REPLY = "w._send(w._protocol.Result(id='bogus', value=1, stdout='', stderr=''))\n"
+BOGUS_REPLY = "w._send(w._protocol.Result(id='bogus', value=1))\n"
 
 
 async def test_a_reply_that_does_not_parse_restarts_the_worker():
@@ -926,7 +972,7 @@ async def test_a_sync_answered_with_garbage_restarts_the_worker():
 async def test_a_sync_answered_out_of_turn_restarts_the_worker():
     store = HandleStore()
     async with make_worker() as worker:
-        bogus = "return w._protocol.Result(id='bogus', value=1, stdout='', stderr='')"
+        bogus = "return w._protocol.Result(id='bogus', value=1)"
         await worker.run(patch_sync(bogus))
         store.register(41)
         reply = await worker.run("r1", handles=store)
