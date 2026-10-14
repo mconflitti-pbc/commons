@@ -1,10 +1,12 @@
 """Rendering query results for the model."""
 
+import json
 from decimal import Decimal
+from pathlib import Path
 
 import pytest
 
-from commons._rows import frame_rows, render_value, rows_to_markdown
+from commons._rows import _format_signif, frame_rows, render_value, rows_to_markdown
 
 
 def test_rows_render_as_a_pipe_table() -> None:
@@ -91,3 +93,22 @@ def test_frame_rows_reads_a_polars_frame() -> None:
 
 def test_frame_rows_declines_a_value_it_cannot_read_rows_from() -> None:
     assert frame_rows(object()) is None
+
+
+BATTERY = Path(__file__).parent / "data" / "r-format-signif.json"
+
+
+def test_a_number_is_formatted_the_way_r_formats_it() -> None:
+    """The battery is `format(x, digits = 4)` read off R. A rendered value
+    has to read the same in both packages, and R is not available to this
+    suite to ask at run time."""
+    cases = json.loads(BATTERY.read_text())
+    assert len(cases) > 100
+
+    wrong = [
+        (case["value"], case["text"], _format_signif(float(case["value"]), 4))
+        for case in cases
+        if _format_signif(float(case["value"]), 4) != case["text"]
+    ]
+
+    assert wrong == []

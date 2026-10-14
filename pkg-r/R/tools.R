@@ -421,19 +421,13 @@ tool_describe_table <- function(private) {
     } else if (has_semantic_models) {
       paste(
         "Describe a catalog object.",
-        "For tables, return columns, types, and sample rows.",
-        "For semantic models, return public members and any verified queries.",
-        "The sample summary covers the sampled rows only, so it cannot show",
-        "which values the whole table holds.",
-        "Before you report that a value is absent, query for it."
+        "For tables, return columns, types, and documentation.",
+        "For semantic models, return public members and any verified queries."
       )
     } else {
       paste(
-        "Describe a table: columns, types, and sample rows.",
-        "Use this before writing SQL against an unfamiliar table.",
-        "The sample summary covers the sampled rows only, so it cannot show",
-        "which values the whole table holds.",
-        "Before you report that a value is absent, query for it."
+        "Describe a table: its columns, types, and documentation.",
+        "Use this before writing SQL against an unfamiliar table."
       )
     },
     arguments = list(
@@ -853,8 +847,7 @@ describe_table_tool <- function(
   trusted_only = FALSE
 ) {
   source_state <- data_source_state(source)
-  # A trusted-only agent never sees raw rows, so none are fetched.
-  d <- source_describe(source, table, n_sample = if (trusted_only) 0 else 5)
+  d <- source_describe(source, table)
   if (inherits(d, "commons_semantic_model_description")) {
     body <- semantic_model_description_text(d)
     return(tool_result(
@@ -875,18 +868,11 @@ describe_table_tool <- function(
     if (is.null(entry)) d$description
   )
 
-  sample <- if (!trusted_only) {
-    sprintf(
-      "Sample summary (the sampled rows only, not necessarily every row):\n\n%s",
-      ellmer::df_schema(d$sample, max_cols = ncol(d$sample))
-    )
-  }
   if (is.null(entry)) {
     parts <- c(
       relation,
       sprintf("Columns of `%s`:\n\n%s", table, df_to_markdown(d$schema)),
-      context,
-      sample
+      context
     )
   } else {
     columns <- sprintf(
@@ -902,8 +888,7 @@ describe_table_tool <- function(
         columns,
         trusted_only = trusted_only
       ),
-      context,
-      sample
+      context
     )
   }
   mark_table_touched(tracker, source_name, table)

@@ -171,7 +171,6 @@ test_that("describe_table merges the dictionary with the live schema", {
   expect_match(res@value, "- product_line (character)", fixed = TRUE)
   expect_match(res@value, "not present in the table: booked_at", fixed = TRUE)
   expect_match(res@value, "sales.rep = reps.name (many-to-one)", fixed = TRUE)
-  expect_match(res@value, "Sample summary", fixed = TRUE)
 })
 
 test_that("warehouse metadata supplements an authored dictionary", {

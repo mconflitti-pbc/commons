@@ -22,7 +22,6 @@ from commons._definitions import ExportRecord, Registry
 from commons._handles import HandleStore
 from commons._measures import as_measure
 from commons._provenance import TAG_EXTRA_KEY, Tag
-from commons._sample_summary import SAMPLE_SUMMARY_HEADING
 from commons._tools import (
     FirstTouch,
     ToolContext,
@@ -374,27 +373,14 @@ def test_a_context_hit_carries_the_turn_citation_request(plain: DataSource) -> N
 # ---- describe_table --------------------------------------------------------
 
 
-def test_describe_table_shows_columns_and_a_summary_of_the_sample(
-    plain: DataSource,
-) -> None:
+def test_describe_table_shows_columns_without_the_rows(plain: DataSource) -> None:
     tools = build_commons_tools(ToolContext(sources={"sales_db": plain}))
 
     body = call(find(tools, "describe_table"), table="sales")
 
     assert "Columns of `sales`:" in body
     assert "| revenue | DOUBLE |" in body
-    assert f"{SAMPLE_SUMMARY_HEADING}\n\nA data frame with 3 rows and 2 columns:" in body
-    assert "* revenue: float with range [300, 900], and 0 NAs" in body
-
-
-def test_a_table_with_no_rows_is_still_described_column_by_column() -> None:
-    source = data_source(sales=frame().head(0))
-    tools = build_commons_tools(ToolContext(sources={"sales_db": source}))
-
-    body = call(find(tools, "describe_table"), table="sales")
-
-    assert "A data frame with 0 rows and 2 columns:" in body
-    assert "* revenue: unknown with 0 NAs" in body
+    assert "EMEA" not in body
 
 
 def test_describe_table_delivers_the_dictionary_entry(documented: DataSource) -> None:
@@ -830,8 +816,8 @@ def test_call_metrics_runs_the_governed_query(documented: DataSource) -> None:
 def test_describe_table_loads_a_pin_before_reading_its_schema(
     tmp_path: Path,
 ) -> None:
-    # The sample query is what loads the pin, so the column read that follows
-    # it has a table to read from.
+    # The columns are read from the backend, not through `query()`, so the
+    # pin has to be loaded first or there is no table to read them from.
     pins = pytest.importorskip("pins")
     board = pins.board_folder(str(tmp_path))
     board.pin_write(frame(), "sales-pin", type="csv")
@@ -841,7 +827,6 @@ def test_describe_table_loads_a_pin_before_reading_its_schema(
     body = call(find(tools, "describe_table"), table="sales")
 
     assert "| revenue | DOUBLE |" in body
-    assert "* revenue: float with range [300, 900], and 0 NAs" in body
 
 
 def test_call_measure_reads_a_board_pin_before_the_measure_runs(

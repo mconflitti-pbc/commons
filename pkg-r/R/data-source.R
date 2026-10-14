@@ -601,7 +601,6 @@ pending_tables_in_error <- function(source, err) {
 source_describe <- function(
   source,
   table,
-  n_sample = 5,
   call = rlang::caller_env()
 ) {
   state <- data_source_state(source)
@@ -622,19 +621,16 @@ source_describe <- function(
   catalog_ensure_queryable(source, table, call = call)
   source_ensure_tables(source, table)
 
-  sample <- DBI::dbGetQuery(
-    state$con,
-    sprintf(
-      "SELECT * FROM %s LIMIT %d",
-      DBI::dbQuoteIdentifier(state$con, id),
-      n_sample
-    )
-  )
   relation <- source_relation(source, table)
   if (is.null(state$relations)) {
+    # Without a warehouse catalog, the types come from a zero-row result.
+    empty <- DBI::dbGetQuery(
+      state$con,
+      sprintf("SELECT * FROM %s LIMIT 0", DBI::dbQuoteIdentifier(state$con, id))
+    )
     schema <- data.frame(
-      column = names(sample),
-      type = vapply(sample, function(x) class(x)[[1]], character(1)),
+      column = names(empty),
+      type = vapply(empty, function(x) class(x)[[1]], character(1)),
       row.names = NULL
     )
   } else if (!is.null(relation$columns)) {
@@ -650,7 +646,6 @@ source_describe <- function(
   }
   list(
     schema = schema,
-    sample = sample,
     kind = relation$kind,
     description = relation$description
   )
