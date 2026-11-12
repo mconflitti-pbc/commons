@@ -1,0 +1,5 @@
+# The Commons wheel is built in pkg-py/ and copied into each app folder.
+*.whl
+
+# rsconnect-python writes deploy records here. They hold server URLs and local paths.
+rsconnect-python/

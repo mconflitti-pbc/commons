@@ -1,0 +1,5 @@
+posit-sdk[a2a] @ git+https://github.com/posit-dev/posit-sdk-py@a52ca15efcd32fcc3b5a88179861096e9b708129
+./commons-0.1.0b2-py3-none-any.whl
+anthropic
+pandas
+uvicorn
